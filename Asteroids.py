@@ -137,22 +137,22 @@ def game_loop():
                     accelerator = True
 
                 if event.key == pygame.K_SPACE:
-                    space = True
-                    st = True
+                    shot_starty = y - 20
+                    shot_startx = x - 15
                     if rotation >= 0 and rotation <= 90:
-                        speed_x = math.sin(rotation*math.pi/180) * 6
-                        speed_y = math.cos(rotation*math.pi/180) * 6
+                        speed_x = math.sin(rotation*math.pi/180) * 10
+                        speed_y = math.cos(rotation*math.pi/180) * 10
                     elif rotation >= 90 and rotation <= 180:
-                        speed_x = math.sin(rotation*math.pi/180) * 6
-                        speed_y = math.cos(rotation*math.pi/180) * 6
+                        speed_x = math.sin(rotation*math.pi/180) * 10
+                        speed_y = math.cos(rotation*math.pi/180) * 10
                     elif rotation >= 180 and rotation <= 270:
-                        speed_x = math.sin(rotation*math.pi/180) * 6
-                        speed_y = math.cos(rotation*math.pi/180) * 6
+                        speed_x = math.sin(rotation*math.pi/180) * 10
+                        speed_y = math.cos(rotation*math.pi/180) * 10
                     elif rotation >= 270 and rotation <= 360:
-                        speed_x = math.sin(rotation*math.pi/180) * 6
-                        speed_y = math.cos(rotation*math.pi/180) * 6
-                    
-                    
+                        speed_x = math.sin(rotation*math.pi/180) * 10
+                        speed_y = math.cos(rotation*math.pi/180) * 10
+                    bullets.append([shot_startx, shot_starty])
+
 
 
             if event.type == pygame.KEYUP:
@@ -189,8 +189,19 @@ def game_loop():
                 ac_x = math.sin(rotation*math.pi/180) * 3
                 ac_y = math.cos(rotation*math.pi/180) * 3
         else:
-            ac_y = 0
-            ac_x = 0
+            if rotation >= 0 and rotation <= 90:
+                ac_x = math.sin(rotation*math.pi/180) / 2
+                ac_y = math.cos(rotation*math.pi/180) / 2
+            elif rotation >= 90 and rotation <= 180:
+                ac_x = math.sin(rotation*math.pi/180) / 2
+                ac_y = math.cos(rotation*math.pi/180) / 2
+            elif rotation >= 180 and rotation <= 270:
+                ac_x = math.sin(rotation*math.pi/180) / 2
+                ac_y = math.cos(rotation*math.pi/180) / 2
+            elif rotation >= 270 and rotation <= 360:
+                ac_x = math.sin(rotation*math.pi/180) / 2
+                ac_y = math.cos(rotation*math.pi/180) / 2
+
 
         
 
@@ -213,9 +224,6 @@ def game_loop():
         x -= ac_x
 
 
-        if space:
-            shot_starty = y - 20
-            shot_startx = x - 15
         
         shot_starty -= speed_y
         shot_startx -= speed_x
@@ -223,14 +231,12 @@ def game_loop():
 
         game_Display.fill((255,255,255))
 
-        if st:
-            for bullet in bullets:
-                shot(shot_startx, shot_starty, shot_radius)
+        for bullet in bullets:
+            shot(shot_startx, shot_starty, shot_radius)
         
         objects(thing_startx, thing_starty, object_radius)
         
         thing_starty += thing_speed
-
         
         naveImg = pygame.image.load('Imagens/naveReserva.png')
         naveImg = pygame.transform.rotate(naveImg,rotation)
@@ -244,7 +250,7 @@ def game_loop():
             
         game_Display.blit(naveImg,naveImgRec)
         
-        
+
         pygame.display.update()
         clock.tick(60)
 
